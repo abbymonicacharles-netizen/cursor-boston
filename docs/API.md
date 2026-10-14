@@ -16,7 +16,7 @@
 
 All endpoints are under `/api/`. Authentication uses Firebase Auth ID tokens (Bearer) or session cookies. Spec: [`/openapi.json`](https://cursorboston.com/openapi.json) · interactive: [`/api/docs`](https://cursorboston.com/api/docs).
 
-**186 paths, 223 operations across 35 areas.**
+**189 paths, 228 operations across 35 areas.**
 
 ---
 
@@ -129,6 +129,9 @@ _Coworking sessions and PyData 2026 ticketing._
 | DELETE | `/api/events/{eventId}/coworking/register` | Yes | Cancel the current user's coworking registration |
 | POST | `/api/events/{eventId}/coworking/register` | Yes | Register for a coworking session in an event |
 | GET | `/api/events/{eventId}/coworking/slots` | No | List coworking sessions with availability for an event |
+| DELETE | `/api/events/{eventId}/rsvp` | Yes | Cancel the current user's on-site RSVP (promotes the waitlist) |
+| GET | `/api/events/{eventId}/rsvp` | No | Get on-site RSVP counts and the current user's status |
+| POST | `/api/events/{eventId}/rsvp` | Yes | RSVP to an event (confirmed if under capacity, otherwise waitlisted) |
 | GET | `/api/events/pydata-2026/access` | No | Whether the signed-in user is on the 150-person PyData 2026 door list |
 | GET | `/api/events/pydata-2026/admin/list` | Yes | Admin: paginated PyData 2026 registrations with cap-vs-waitlist |
 | GET | `/api/events/pydata-2026/capacity` | No | Public PyData 2026 capacity / claimed / remaining counts |
@@ -190,7 +193,7 @@ _Strategy game endpoints (leaderboard, attacks, artifacts, turns)._
 | GET | `/api/game/world` | Yes | Fetch tiles for the world map (full or bbox) |
 | GET | `/api/game/world-3d` | No | Public 3D flyover world snapshot (daily, anonymous-accessible) |
 
-## Github
+## GitHub
 
 _GitHub OAuth + signed webhook receiver._
 
@@ -252,6 +255,8 @@ _Treasure hunt: oracle, paths, prize claim._
 
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
+| POST | `/api/hunt/link-fragment/assemble` | No | Assemble a referral URL from signed fragment tokens |
+| POST | `/api/hunt/link-fragment/verify` | No | Verify a link-fragment puzzle answer |
 | GET | `/api/hunt/oracle` | No | Daily oracle riddle + answer fingerprint |
 | GET | `/api/hunt/oracle/konami` | No | Daily Konami token (only revealed with X-Konami-Sequence header) |
 | POST | `/api/hunt/paths/{pathId}/submit` | Yes | Submit a candidate answer for a hunt path |

@@ -12,11 +12,14 @@ import { notFound } from "next/navigation";
 import eventsData from "@/content/events.json";
 import type { EventsData } from "@/types/events";
 import CoworkingSlots from "@/components/events/CoworkingSlots";
+import { EventRsvpCard } from "@/components/events/EventRsvpCard";
+import { eventSupportsOnSiteRsvp } from "@/lib/event-rsvp-core";
 import {
   getLumaCheckoutEventId,
   getLumaCheckoutHref,
 } from "@/lib/luma-event";
 import { PYDATA_2026_EVENT_SLUG } from "@/lib/pydata-2026";
+import { HuntSourceComment } from "@/components/hunt/HuntSourceComment";
 
 // Type definitions for event data
 interface AgendaItem {
@@ -78,6 +81,7 @@ interface Event {
   lumaCheckoutEventId?: string;
   registrationRequired: boolean;
   capacity?: number;
+  onSiteRsvp?: boolean;
   perks?: string[];
   topics?: string[];
   agenda?: AgendaItem[];
@@ -238,6 +242,9 @@ export default async function EventPage({
 
   return (
     <div className="flex flex-col">
+      {slug === "cursor-boston-hult-summer-hackathon-2026" && (
+        <HuntSourceComment text="Link hunt: who from Cursor joins at 2:30 PM? First and last name." />
+      )}
       {/* JSON-LD */}
       <script
         type="application/ld+json"
@@ -425,6 +432,13 @@ export default async function EventPage({
                 </a>
               </div>
             )}
+            {eventSupportsOnSiteRsvp(event) && typeof event.capacity === "number" ? (
+              <EventRsvpCard
+                eventId={event.id}
+                eventSlug={event.slug}
+                capacity={event.capacity}
+              />
+            ) : null}
           </div>
         </div>
       </section>
